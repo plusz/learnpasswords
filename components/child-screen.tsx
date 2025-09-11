@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -36,6 +36,7 @@ const translations = {
       "You're a password star! ⭐",
       "Fantastic job! 🎉",
     ],
+    tooLong: "Maybe try from the beginning and ask your parent for help? 🤔",
     levelNames: ["Beginner", "Explorer", "Guardian", "Champion", "Master"],
   },
   pl: {
@@ -56,6 +57,7 @@ const translations = {
       "Jesteś gwiazdą haseł! ⭐",
       "Fantastyczna robota! 🎉",
     ],
+    tooLong: "Może spróbuj od początku i poproś rodzica o pomoc? 🤔",
     levelNames: ["Początkujący", "Odkrywca", "Strażnik", "Mistrz", "Ekspert"],
   },
 }
@@ -74,12 +76,24 @@ export default function ChildScreen({
   const [isSuccess, setIsSuccess] = useState(false)
   const [showCelebration, setShowCelebration] = useState(false)
   const [attempts, setAttempts] = useState(0)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const t = translations[language]
 
   const currentLevel = Math.floor(score / 5)
   const levelName = t.levelNames[Math.min(currentLevel, t.levelNames.length - 1)]
   const starsInLevel = score % 5
+
+  // Auto-focus input on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 100)
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     if (inputPassword && inputPassword === password) {
@@ -102,12 +116,19 @@ export default function ChildScreen({
       }, 3000)
     } else if (inputPassword && inputPassword !== password && inputPassword.length >= password.length) {
       setIsSuccess(false)
-      setFeedback(t.tryAgain)
+      
+      // If user typed more characters than password length, show special message
+      if (inputPassword.length > password.length) {
+        setFeedback(t.tooLong)
+      } else {
+        setFeedback(t.tryAgain)
+      }
+      
       setAttempts((prev) => prev + 1)
 
       setTimeout(() => {
         setFeedback("")
-      }, 2000)
+      }, 3000)
     }
   }, [inputPassword, password, t.success, t.tryAgain, score, onScoreChange])
 
@@ -198,11 +219,18 @@ export default function ChildScreen({
             <label className="block text-lg font-medium mb-4 text-left">{t.passwordLabel}</label>
             <div className="relative">
               <Input
+                ref={inputRef}
                 type={showPassword ? "text" : "password"}
                 value={inputPassword}
                 onChange={(e) => setInputPassword(e.target.value)}
                 placeholder={t.passwordPlaceholder}
-                className="text-2xl h-16 pr-16 text-center"
+                className="text-2xl h-16 pr-16 text-center placeholder:text-gray-400 placeholder:font-light caret-primary"
+                autoFocus
+                style={{
+                  caretColor: 'hsl(var(--primary))',
+                  fontSize: '1.5rem',
+                  fontWeight: '500'
+                }}
                 autoComplete="off"
               />
               <Button
@@ -228,11 +256,11 @@ export default function ChildScreen({
             <div
               className={`p-4 rounded-lg mb-6 ${
                 isSuccess
-                  ? "bg-primary/10 text-primary border border-primary/20"
-                  : "bg-accent/10 text-accent-foreground border border-accent/20"
+                  ? "bg-primary/20 text-primary border-2 border-primary/40"
+                  : "bg-orange-100 text-orange-800 border-2 border-orange-300"
               }`}
             >
-              <p className="text-lg font-medium">{feedback}</p>
+              <p className="text-lg font-bold">{feedback}</p>
             </div>
           )}
 
@@ -247,8 +275,8 @@ export default function ChildScreen({
 
           {/* Encouragement */}
           {attempts > 0 && !isSuccess && (
-            <div className="mt-6 p-4 bg-accent/10 rounded-lg">
-              <p className="text-accent-foreground">{t.encouragement[attempts % t.encouragement.length]}</p>
+            <div className="mt-6 p-4 bg-blue-100 rounded-lg border-2 border-blue-300">
+              <p className="text-blue-800 font-semibold text-lg">{t.encouragement[attempts % t.encouragement.length]}</p>
             </div>
           )}
         </Card>
