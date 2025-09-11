@@ -29,8 +29,8 @@ const translations = {
     },
   },
   pl: {
-    title: "Przygoda z Hasłami",
-    subtitle: "Naucz się bezpieczeństwa haseł w zabawny sposób!",
+    title: "Przygoda z Hasłami - naucz pierwszaka jego hasła",
+    subtitle: "Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!",
     adminButton: "Tryb Rodzica",
     childButton: "Graj i Ucz Się",
     languageLabel: "Język",
@@ -62,8 +62,8 @@ export default function HomePage() {
       // Update metadata on initial load
       const metadata = {
         pl: {
-          title: 'Przygoda z Hasłami',
-          description: 'Naucz się bezpieczeństwa haseł w zabawny sposób!',
+          title: 'Przygoda z Hasłami - naucz pierwszaka jego hasła',
+          description: 'Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!',
         },
         en: {
           title: 'Password Learning Adventure',
