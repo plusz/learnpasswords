@@ -58,10 +58,12 @@ const translations = {
       examples: {
         title: "Przykłady Dobrych Haseł dla Dzieci",
         good: [
-          "MamNajlepsząMamę123!",
-          "KochamCzytaćKsiążki7",
-          "ZielonyDinosaurJestSuper!",
-          "PiłkaNożnaToMojaPasja9"
+          "Lew21Kuba",
+          "Mysz396Patrycja",
+          "Słoń!88!Ania",
+          "Kot123Tomek",
+          "Pies77Małgorzata",
+          "Tygrys!44!Michał"
         ],
         bad: [
           "hasło123",
@@ -100,17 +102,17 @@ const translations = {
         title: "Best Method: Two Words + Numbers",
         description: "Choose two words that the child associates with some event, like a favorite animal and their name. Connect them with numbers instead of spaces.",
         examples: [
-          "Lion21Kuba",
-          "Mouse396Patricia", 
-          "Elephant!88!Anna",
-          "Cat123Tommy"
+          "Lion21Jack",
+          "Mouse396Emma", 
+          "Elephant!88!Sophie",
+          "Cat123Oliver"
         ],
         tips: [
           "Choose child's favorite animal + their name",
           "Use numbers instead of spaces (age, favorite number)",
           "Make the first letter of the name uppercase",
           "You can add a special character at the beginning or end",
-          "Example: animal + numbers + Name = Lion21Kuba"
+          "Example: animal + numbers + Name = Lion21Jack"
         ]
       },
       managers: {
@@ -127,10 +129,12 @@ const translations = {
       examples: {
         title: "Examples of Good Passwords for Children",
         good: [
-          "IHaveTheBestMom123!",
-          "ILoveReadingBooks7",
-          "GreenDinosaurIsSuper!",
-          "SoccerIsMyPassion9"
+          "Lion21Kuba",
+          "Mouse396Patricia",
+          "Elephant!88!Anna",
+          "Cat123Tommy",
+          "Dog77Margaret",
+          "Tiger!44!Michael"
         ],
         bad: [
           "password123",
