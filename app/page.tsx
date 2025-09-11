@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Languages, Shield, Star, Users } from "lucide-react"
@@ -18,6 +18,7 @@ const translations = {
     adminButton: "Parent Mode",
     childButton: "Play & Learn",
     languageLabel: "Language",
+    contact: "Contact",
     features: {
       secure: "Safe & Secure",
       secureDesc: "Everything stays in your browser - no passwords are sent to the internet. Security details and source code link can be found in the parent module in the 'Why Password Strength Matters' section.",
@@ -33,6 +34,7 @@ const translations = {
     adminButton: "Tryb Rodzica",
     childButton: "Graj i Ucz Się",
     languageLabel: "Język",
+    contact: "Kontakt",
     features: {
       secure: "Bezpieczne",
       secureDesc: "Wszystko zostaje w przeglądarce - żadne hasła nie są wysyłane do internetu. Szczegóły bezpieczeństwa i link do kodu źródłowego znajdziesz w module rodzica w sekcji 'Dlaczego Siła Hasła Ma Znaczenie'.",
@@ -50,13 +52,72 @@ export default function HomePage() {
   const [password, setPassword] = useState("")
   const [childScore, setChildScore] = useState(0)
 
+  // Check URL parameters for language on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const langParam = urlParams.get('lang')
+    if (langParam === 'en' || langParam === 'pl') {
+      setLanguage(langParam as Language)
+      
+      // Update metadata on initial load
+      const metadata = {
+        pl: {
+          title: 'Przygoda z Hasłami',
+          description: 'Naucz się bezpieczeństwa haseł w zabawny sposób!',
+        },
+        en: {
+          title: 'Password Learning Adventure',
+          description: 'Learn password security in a fun way!',
+        }
+      }
+      
+      document.title = metadata[langParam as Language].title
+      const metaDescription = document.querySelector('meta[name="description"]')
+      if (metaDescription) {
+        metaDescription.setAttribute('content', metadata[langParam as Language].description)
+      }
+      
+      // Update html lang attribute
+      document.documentElement.lang = langParam
+    }
+  }, [])
+
+  // Update URL when language changes
+  const handleLanguageChange = (newLanguage: Language) => {
+    setLanguage(newLanguage)
+    const url = new URL(window.location.href)
+    url.searchParams.set('lang', newLanguage)
+    window.history.replaceState({}, '', url.toString())
+    
+    // Update document title and meta description dynamically
+    const metadata = {
+      pl: {
+        title: 'Przygoda z Hasłami',
+        description: 'Naucz się bezpieczeństwa haseł w zabawny sposób!',
+      },
+      en: {
+        title: 'Password Learning Adventure',
+        description: 'Learn password security in a fun way!',
+      }
+    }
+    
+    document.title = metadata[newLanguage].title
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', metadata[newLanguage].description)
+    }
+    
+    // Update html lang attribute
+    document.documentElement.lang = newLanguage
+  }
+
   const t = translations[language]
 
   if (screen === "admin") {
     return (
       <AdminScreen
         language={language}
-        onLanguageChange={setLanguage}
+        onLanguageChange={handleLanguageChange}
         onBack={() => setScreen("home")}
         onSwitchToChild={() => setScreen("child")}
         onSwitchToGuide={() => setScreen("guide")}
@@ -70,7 +131,7 @@ export default function HomePage() {
     return (
       <ChildScreen
         language={language}
-        onLanguageChange={setLanguage}
+        onLanguageChange={handleLanguageChange}
         onBack={() => setScreen("home")}
         password={password}
         score={childScore}
@@ -83,7 +144,7 @@ export default function HomePage() {
     return (
       <PasswordGuide
         language={language}
-        onLanguageChange={setLanguage}
+        onLanguageChange={handleLanguageChange}
         onBack={() => setScreen("admin")}
       />
     )
@@ -100,7 +161,7 @@ export default function HomePage() {
             <Button
               variant={language === "en" ? "default" : "outline"}
               size="sm"
-              onClick={() => setLanguage("en")}
+              onClick={() => handleLanguageChange("en")}
               className="h-8 px-3"
             >
               EN
@@ -108,7 +169,7 @@ export default function HomePage() {
             <Button
               variant={language === "pl" ? "default" : "outline"}
               size="sm"
-              onClick={() => setLanguage("pl")}
+              onClick={() => handleLanguageChange("pl")}
               className="h-8 px-3"
             >
               PL
@@ -182,7 +243,7 @@ export default function HomePage() {
         <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-muted-foreground">
           <p className="mb-2">© Ola i Tata 2025</p>
           <p>
-            Kontakt:{" "}
+            {t.contact}:{" "}
             <span
               className="cursor-pointer hover:text-primary transition-colors"
               onClick={() => {
