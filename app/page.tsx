@@ -33,8 +33,8 @@ const translations = {
     },
   },
   pl: {
-    title: "Przygoda z Hasłami - naucz pierwszaka jego hasła",
-    subtitle: "Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!",
+    title: "Przygoda z Hasłami",
+    subtitle: "Naucz się bezpieczeństwa haseł w zabawny sposób!",
     metadata: {
       title: "Przygoda z Hasłami - naucz pierwszaka jego hasła",
       description: "Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!"
