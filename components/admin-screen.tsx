@@ -24,6 +24,7 @@ interface AdminScreenProps {
   onLanguageChange: (lang: Language) => void
   onBack: () => void
   onSwitchToChild: () => void
+  onSwitchToGuide: () => void
   password: string
   onPasswordChange: (password: string) => void
 }
@@ -43,6 +44,8 @@ const translations = {
         "Choose a password that's strong but easy for your child to remember. Consider using a memorable phrase or pattern.",
       privacy: "This password never leaves your browser - it's completely private and secure.",
       learnMore: "Learn more about password security",
+      sourceCode: "Application source code",
+      passwordGuide: "Guide: How to set a good password",
     },
     strength: {
       weak: "Weak",
@@ -76,6 +79,8 @@ const translations = {
         "Wybierz hasło, które jest silne, ale łatwe do zapamiętania dla dziecka. Rozważ użycie pamiętnej frazy lub wzoru.",
       privacy: "To hasło nigdy nie opuszcza przeglądarki - jest całkowicie prywatne i bezpieczne.",
       learnMore: "Dowiedz się więcej o bezpieczeństwie haseł",
+      sourceCode: "Kod źródłowy aplikacji",
+      passwordGuide: "Poradnik: Jak ustawić dobre hasło",
     },
     strength: {
       weak: "Słabe",
@@ -135,6 +140,7 @@ export default function AdminScreen({
   onLanguageChange,
   onBack,
   onSwitchToChild,
+  onSwitchToGuide,
   password,
   onPasswordChange,
 }: AdminScreenProps) {
@@ -286,14 +292,32 @@ export default function AdminScreen({
               <p>{t.education.memory}</p>
               <p className="font-medium text-primary">{t.education.privacy}</p>
 
-              <Button
-                variant="outline"
-                className="mt-4 flex items-center gap-2 bg-transparent"
-                onClick={() => window.open("https://bitwarden.com/password-strength/", "_blank")}
-              >
-                <ExternalLink className="w-4 h-4" />
-                {t.education.learnMore}
-              </Button>
+              <div className="flex flex-col gap-2 mt-4">
+                <Button
+                  variant="default"
+                  className="flex items-center gap-2"
+                  onClick={onSwitchToGuide}
+                >
+                  <Shield className="w-4 h-4" />
+                  {t.education.passwordGuide}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 bg-transparent"
+                  onClick={() => window.open("https://bitwarden.com/password-strength/", "_blank")}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {t.education.learnMore}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 bg-transparent"
+                  onClick={() => window.open("https://github.com/plusz/learnpasswords", "_blank")}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {t.education.sourceCode}
+                </Button>
+              </div>
             </div>
           </Card>
         </div>

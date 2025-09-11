@@ -6,9 +6,10 @@ import { Card } from "@/components/ui/card"
 import { Languages, Shield, Star, Users } from "lucide-react"
 import AdminScreen from "@/components/admin-screen"
 import ChildScreen from "@/components/child-screen"
+import PasswordGuide from "@/components/password-guide"
 
 type Language = "en" | "pl"
-type Screen = "home" | "admin" | "child"
+type Screen = "home" | "admin" | "child" | "guide"
 
 const translations = {
   en: {
@@ -19,11 +20,11 @@ const translations = {
     languageLabel: "Language",
     features: {
       secure: "Safe & Secure",
-      secureDesc: "Everything stays in your browser",
+      secureDesc: "Everything stays in your browser - no passwords are sent to the internet. Security details and source code link can be found in the parent module in the 'Why Password Strength Matters' section.",
       fun: "Fun Learning",
-      funDesc: "Gamified password practice",
+      funDesc: "Children earn stars for each successful password entry. Parents can show the password on screen to help children learn key positions on the keyboard.",
       educational: "Educational",
-      educationalDesc: "Learn why passwords matter",
+      educationalDesc: "Education for both children and parents - kids learn safe habits while parents discover how to create strong passwords.",
     },
   },
   pl: {
@@ -34,17 +35,17 @@ const translations = {
     languageLabel: "Język",
     features: {
       secure: "Bezpieczne",
-      secureDesc: "Wszystko zostaje w przeglądarce",
+      secureDesc: "Wszystko zostaje w przeglądarce - żadne hasła nie są wysyłane do internetu. Szczegóły bezpieczeństwa i link do kodu źródłowego znajdziesz w module rodzica w sekcji 'Dlaczego Siła Hasła Ma Znaczenie'.",
       fun: "Zabawna Nauka",
-      funDesc: "Gamifikacja ćwiczenia haseł",
+      funDesc: "Dziecko otrzymuje gwiazdki za każdy sukces w wpisywaniu hasła. Rodzic może pokazać hasło na ekranie, aby łatwiej nauczyć dziecko położenia klawiszy na klawiaturze.",
       educational: "Edukacyjne",
-      educationalDesc: "Dowiedz się dlaczego hasła są ważne",
+      educationalDesc: "Edukacja zarówno dla dzieci jak i rodziców - dzieci uczą się bezpiecznych nawyków, a rodzice dowiadują się jak tworzyć silne hasła.",
     },
   },
 }
 
 export default function HomePage() {
-  const [language, setLanguage] = useState<Language>("en")
+  const [language, setLanguage] = useState<Language>("pl")
   const [screen, setScreen] = useState<Screen>("home")
   const [password, setPassword] = useState("")
   const [childScore, setChildScore] = useState(0)
@@ -58,6 +59,7 @@ export default function HomePage() {
         onLanguageChange={setLanguage}
         onBack={() => setScreen("home")}
         onSwitchToChild={() => setScreen("child")}
+        onSwitchToGuide={() => setScreen("guide")}
         password={password}
         onPasswordChange={setPassword}
       />
@@ -73,6 +75,16 @@ export default function HomePage() {
         password={password}
         score={childScore}
         onScoreChange={setChildScore}
+      />
+    )
+  }
+
+  if (screen === "guide") {
+    return (
+      <PasswordGuide
+        language={language}
+        onLanguageChange={setLanguage}
+        onBack={() => setScreen("admin")}
       />
     )
   }
@@ -165,6 +177,23 @@ export default function HomePage() {
             <p className="text-sm text-muted-foreground">{t.features.educationalDesc}</p>
           </Card>
         </div>
+
+        {/* Footer */}
+        <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-muted-foreground">
+          <p className="mb-2">© Ola i Tata 2025</p>
+          <p>
+            Kontakt:{" "}
+            <span
+              className="cursor-pointer hover:text-primary transition-colors"
+              onClick={() => {
+                const email = ['n', 'a', 'u', 'k', 'a', 'h', 'a', 's', 'e', 'l', '@', 'o', 'r', 'p', 'i', '.', 'p', 'l'].join('');
+                window.location.href = 'mailto:' + email;
+              }}
+            >
+              naukahasel@orpi.pl
+            </span>
+          </p>
+        </footer>
       </div>
     </div>
   )
