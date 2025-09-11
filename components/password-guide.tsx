@@ -28,19 +28,20 @@ const translations = {
         ]
       },
       phrases: {
-        title: "Najlepsza Metoda: Frazy",
-        description: "Najlepszym sposobem na stworzenie silnego, ale łatwego do zapamiętania hasła jest użycie frazy.",
+        title: "Najlepsza Metoda: Dwa Słowa + Cyfry",
+        description: "Wybierz dwa słowa które kojarzą się dziecku z jakimś wydarzeniem, np. ulubionym zwierzęciem i imieniem. Połącz je cyframi zamiast spacji.",
         examples: [
-          "BiałyKotekLubiMleko!",
-          "MójPiesJestNajlepszy2024",
-          "KochamPizzęZAnansem!",
-          "ZielonySmokLataNocą7"
+          "Lew21Kuba",
+          "Mysz396Patrycja", 
+          "Słoń!88!Ania",
+          "Kot123Tomek"
         ],
         tips: [
-          "Użyj czegoś co dziecko łatwo zapamięta",
-          "Połącz kilka słów w jedną frazę",
-          "Dodaj cyfrę i znak specjalny",
-          "Nie używaj prawdziwych informacji (imiona zwierząt, daty urodzin)"
+          "Wybierz ulubione zwierzę dziecka + jego imię",
+          "Zamiast spacji użyj cyfr (np. wiek, ulubiona liczba)",
+          "Pierwsza litera imienia niech będzie duża",
+          "Możesz dodać znak specjalny na początku lub końcu",
+          "Przykład: zwierzę + cyfry + Imię = Lew21Kuba"
         ]
       },
       managers: {
@@ -96,19 +97,20 @@ const translations = {
         ]
       },
       phrases: {
-        title: "Best Method: Phrases",
-        description: "The best way to create a strong but memorable password is to use a phrase.",
+        title: "Best Method: Two Words + Numbers",
+        description: "Choose two words that the child associates with some event, like a favorite animal and their name. Connect them with numbers instead of spaces.",
         examples: [
-          "WhiteCatLovesMilk!",
-          "MyDogIsTheBest2024",
-          "ILovePizzaWithPineapple!",
-          "GreenDragonFliesAtNight7"
+          "Lion21Kuba",
+          "Mouse396Patricia", 
+          "Elephant!88!Anna",
+          "Cat123Tommy"
         ],
         tips: [
-          "Use something the child will easily remember",
-          "Combine several words into one phrase",
-          "Add a number and special character",
-          "Don't use real information (pet names, birth dates)"
+          "Choose child's favorite animal + their name",
+          "Use numbers instead of spaces (age, favorite number)",
+          "Make the first letter of the name uppercase",
+          "You can add a special character at the beginning or end",
+          "Example: animal + numbers + Name = Lion21Kuba"
         ]
       },
       managers: {
