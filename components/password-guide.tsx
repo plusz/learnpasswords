@@ -33,7 +33,7 @@ const translations = {
         examples: [
           "Lew21Kuba",
           "Mysz396Patrycja", 
-          "Słoń!88!Ania",
+          "Slon!88!Ania",
           "Kot123Tomek"
         ],
         tips: [
@@ -60,16 +60,18 @@ const translations = {
         good: [
           "Lew21Kuba",
           "Mysz396Patrycja",
-          "Słoń!88!Ania",
+          "Slon!88!Ania",
           "Kot123Tomek",
-          "Pies77Małgorzata",
-          "Tygrys!44!Michał"
+          "Pies77Malgorzata",
+          "Tygrys!44!Michal"
         ],
         bad: [
           "hasło123",
           "qwerty",
           "123456789",
-          "password"
+          "password",
+          "kuba123",
+          "ania2024"
         ]
       },
       tips: {
@@ -140,7 +142,9 @@ const translations = {
           "password123",
           "qwerty",
           "123456789",
-          "password"
+          "password",
+          "jack123",
+          "anna2024"
         ]
       },
       tips: {
