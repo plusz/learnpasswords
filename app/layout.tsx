@@ -8,7 +8,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Przygoda z Hasłami | Password Learning Adventure',
   description: 'Naucz się bezpieczeństwa haseł w zabawny sposób! | Learn password security in a fun way!',
-  generator: 'v0.app',
+  generator: 'Windsurf & dev.orpi.pl',
 }
 
 export default function RootLayout({
