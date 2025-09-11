@@ -6,8 +6,8 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Przygoda z Hasłami | Password Learning Adventure',
-  description: 'Naucz się bezpieczeństwa haseł w zabawny sposób! | Learn password security in a fun way!',
+  title: 'Przygoda z Hasłami - naucz pierwszaka jego hasła',
+  description: 'Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!',
   generator: 'Windsurf & dev.orpi.pl',
 }
 

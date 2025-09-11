@@ -15,6 +15,10 @@ const translations = {
   en: {
     title: "Password Learning Adventure",
     subtitle: "Learn password security in a fun way!",
+    metadata: {
+      title: "Password Learning Adventure",
+      description: "Learn password security in a fun way!"
+    },
     adminButton: "Parent Mode",
     childButton: "Play & Learn",
     languageLabel: "Language",
@@ -31,6 +35,10 @@ const translations = {
   pl: {
     title: "Przygoda z Hasłami - naucz pierwszaka jego hasła",
     subtitle: "Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!",
+    metadata: {
+      title: "Przygoda z Hasłami - naucz pierwszaka jego hasła",
+      description: "Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!"
+    },
     adminButton: "Tryb Rodzica",
     childButton: "Graj i Ucz Się",
     languageLabel: "Język",
@@ -60,21 +68,11 @@ export default function HomePage() {
       setLanguage(langParam as Language)
       
       // Update metadata on initial load
-      const metadata = {
-        pl: {
-          title: 'Przygoda z Hasłami - naucz pierwszaka jego hasła',
-          description: 'Zabawa dla pierwszaków - Naucz się bezpieczeństwa haseł w zabawny sposób!',
-        },
-        en: {
-          title: 'Password Learning Adventure',
-          description: 'Learn password security in a fun way!',
-        }
-      }
-      
-      document.title = metadata[langParam as Language].title
+      const langTranslations = translations[langParam as Language]
+      document.title = langTranslations.metadata.title
       const metaDescription = document.querySelector('meta[name="description"]')
       if (metaDescription) {
-        metaDescription.setAttribute('content', metadata[langParam as Language].description)
+        metaDescription.setAttribute('content', langTranslations.metadata.description)
       }
       
       // Update html lang attribute
@@ -90,21 +88,11 @@ export default function HomePage() {
     window.history.replaceState({}, '', url.toString())
     
     // Update document title and meta description dynamically
-    const metadata = {
-      pl: {
-        title: 'Przygoda z Hasłami',
-        description: 'Naucz się bezpieczeństwa haseł w zabawny sposób!',
-      },
-      en: {
-        title: 'Password Learning Adventure',
-        description: 'Learn password security in a fun way!',
-      }
-    }
-    
-    document.title = metadata[newLanguage].title
+    const langTranslations = translations[newLanguage]
+    document.title = langTranslations.metadata.title
     const metaDescription = document.querySelector('meta[name="description"]')
     if (metaDescription) {
-      metaDescription.setAttribute('content', metadata[newLanguage].description)
+      metaDescription.setAttribute('content', langTranslations.metadata.description)
     }
     
     // Update html lang attribute
