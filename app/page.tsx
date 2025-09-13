@@ -169,16 +169,25 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <Shield className="w-24 h-24 text-primary animate-pulse" />
-              <Star className="w-8 h-8 text-accent absolute -top-2 -right-2 animate-star-twinkle" />
+        {/* Hero Section with Lion */}
+        <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+          <div className="text-center lg:text-left">
+            <div className="flex justify-center lg:justify-start mb-6">
+              <div className="relative">
+                <Shield className="w-16 h-16 text-primary animate-pulse" />
+                <Star className="w-6 h-6 text-accent absolute -top-2 -right-2 animate-star-twinkle" />
+              </div>
             </div>
+            <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4 text-balance">{t.title}</h1>
+            <p className="text-lg text-muted-foreground mb-8 text-pretty">{t.subtitle}</p>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-primary mb-4 text-balance">{t.title}</h1>
-          <p className="text-xl text-muted-foreground mb-8 text-pretty">{t.subtitle}</p>
+          <div className="flex justify-center lg:justify-end">
+            <img 
+              src="/kuba-lion.png" 
+              alt="Kuba the Lion Mascot" 
+              className="w-80 h-auto max-w-full" 
+            />
+          </div>
         </div>
 
         {/* Mode Selection */}
@@ -192,7 +201,7 @@ export default function HomePage() {
                 <Users className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-2xl font-bold mb-2">{t.adminButton}</h3>
-              <p className="text-muted-foreground">Set passwords and monitor progress</p>
+              <p className="text-muted-foreground">{language === "en" ? "Set passwords and monitor progress" : "Ustaw hasła i monitoruj postępy"}</p>
             </div>
           </Card>
 
@@ -205,7 +214,7 @@ export default function HomePage() {
                 <Star className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-2xl font-bold mb-2">{t.childButton}</h3>
-              <p className="text-muted-foreground">Practice passwords and earn stars!</p>
+              <p className="text-muted-foreground">{language === "en" ? "Practice passwords and earn stars!" : "Ćwicz hasła i zdobywaj gwiazdki!"}</p>
             </div>
           </Card>
         </div>
