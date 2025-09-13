@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Eye, EyeOff, Languages, Star, Trophy, Sparkles, LogIn } from "lucide-react"
+import { ArrowLeft, Eye, EyeOff, Languages, Star, Trophy, Sparkles, LogIn, PartyPopper } from "lucide-react"
 
 type Language = "en" | "pl"
 
@@ -26,11 +26,16 @@ const translations = {
     passwordPlaceholder: "Type your password here...",
     showPassword: "Show password",
     hidePassword: "Hide password",
+    spaceWarning: "⚠️ Your password contains spaces - they might cause problems!",
     tryAgain: "Try again! You can do it! 🌟",
     success: "Amazing! You got it right! ⭐",
     score: "Stars earned",
     level: "Level",
     loginButton: "Login",
+    levelUp: "Level Up!",
+    newLevel: "New Level:",
+    continueTraining: "Continue Training",
+    congratulations: "Congratulations! You've reached a new level!",
     encouragement: [
       "You're doing great! 🌟",
       "Keep practicing! 💪",
@@ -48,11 +53,16 @@ const translations = {
     passwordPlaceholder: "Wpisz tutaj swoje hasło...",
     showPassword: "Pokaż hasło",
     hidePassword: "Ukryj hasło",
+    spaceWarning: "⚠️ Twoje hasło zawiera spacje - mogą powodować problemy!",
     tryAgain: "Spróbuj ponownie! Dasz radę! 🌟",
     success: "Niesamowite! Udało ci się! ⭐",
     score: "Zdobyte gwiazdki",
     level: "Poziom",
     loginButton: "Zaloguj",
+    levelUp: "Nowy Poziom!",
+    newLevel: "Nowy Poziom:",
+    continueTraining: "Ćwicz Dalej",
+    congratulations: "Gratulacje! Osiągnąłeś nowy poziom!",
     encouragement: [
       "Świetnie ci idzie! 🌟",
       "Ćwicz dalej! 💪",
@@ -80,6 +90,9 @@ export default function ChildScreen({
   const [isSuccess, setIsSuccess] = useState(false)
   const [showCelebration, setShowCelebration] = useState(false)
   const [attempts, setAttempts] = useState(0)
+  const [showLevelUp, setShowLevelUp] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [newLevel, setNewLevel] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const t = translations[language]
@@ -104,20 +117,39 @@ export default function ChildScreen({
       setIsSuccess(true)
       setFeedback(t.success)
       setShowCelebration(true)
-      onScoreChange(score + 1)
+      const newScore = score + 1
+      onScoreChange(newScore)
       setInputPassword("")
 
-      // Play success sound (if available)
-      try {
-        const audio = new Audio("/success-sound.mp3")
-        audio.play().catch(() => {}) // Ignore if sound fails
-      } catch (e) {}
-
-      setTimeout(() => {
-        setShowCelebration(false)
-        setIsSuccess(false)
-        setFeedback("")
-      }, 3000)
+      // Check if reached 5 stars (level up)
+      if (newScore % 5 === 0) {
+        const levelReached = Math.floor(newScore / 5)
+        setNewLevel(levelReached)
+        
+        // Play success sound only for level up
+        try {
+          const audio = new Audio("/success-sound.mp3")
+          audio.play().catch(() => {}) // Ignore if sound fails
+        } catch (e) {}
+        
+        // Show confetti and level up immediately
+        setShowConfetti(true)
+        setShowLevelUp(true)
+        
+        // Hide confetti after 5 seconds
+        setTimeout(() => {
+          setShowConfetti(false)
+        }, 5000)
+        
+        // Don't hide celebration automatically for level up - wait for user action
+      } else {
+        // Normal success timeout
+        setTimeout(() => {
+          setShowCelebration(false)
+          setIsSuccess(false)
+          setFeedback("")
+        }, 3000)
+      }
     } else {
       setIsSuccess(false)
       
@@ -134,6 +166,13 @@ export default function ChildScreen({
         setFeedback("")
       }, 3000)
     }
+  }
+
+  const handleContinueTraining = () => {
+    setShowLevelUp(false)
+    setShowCelebration(false)
+    setIsSuccess(false)
+    setFeedback("")
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -274,25 +313,32 @@ export default function ChildScreen({
                 variant="ghost"
                 size="sm"
                 className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 p-0"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => {
+                  setShowPassword(!showPassword)
+                  // Refocus input after toggling visibility
+                  setTimeout(() => {
+                    if (inputRef.current) {
+                      inputRef.current.focus()
+                      // Move cursor to end
+                      const length = inputRef.current.value.length
+                      inputRef.current.setSelectionRange(length, length)
+                    }
+                  }, 0)
+                }}
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </Button>
             </div>
             
-            {/* Login Button - Outside the input field */}
-            {requireConfirmation && (
-              <div className="mt-4">
-                <Button
-                  onClick={handlePasswordCheck}
-                  disabled={!inputPassword}
-                  className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2 text-lg font-semibold"
-                >
-                  <LogIn className="w-5 h-5" />
-                  {t.loginButton}
-                </Button>
+            {/* Space Warning */}
+            {showPassword && inputPassword.includes(' ') && (
+              <div className="mt-3 p-3 bg-orange-100 border border-orange-300 rounded-lg">
+                <p className="text-orange-800 text-sm font-medium text-center">
+                  {t.spaceWarning}
+                </p>
               </div>
             )}
+            
             <button
               onClick={() => setShowPassword(!showPassword)}
               className="text-sm text-muted-foreground mt-2 hover:text-primary transition-colors cursor-pointer underline-offset-2 hover:underline"
@@ -300,6 +346,20 @@ export default function ChildScreen({
               {showPassword ? t.hidePassword : t.showPassword}
             </button>
           </div>
+
+          {/* Login Button - Outside the input field */}
+          {requireConfirmation && (
+            <div className="mt-4">
+              <Button
+                onClick={handlePasswordCheck}
+                disabled={!inputPassword}
+                className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2 text-lg font-semibold"
+              >
+                <LogIn className="w-5 h-5" />
+                {t.loginButton}
+              </Button>
+            </div>
+          )}
 
           {/* Feedback */}
           {feedback && (
@@ -323,6 +383,49 @@ export default function ChildScreen({
             </div>
           )}
 
+          {/* Confetti Animation */}
+          {showConfetti && (
+            <div className="fixed inset-0 pointer-events-none z-40">
+              {[...Array(50)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute animate-confetti"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${3 + Math.random() * 2}s`
+                  }}
+                >
+                  <Star className="w-4 h-4 text-accent" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Level Up Modal */}
+          {showLevelUp && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl p-8 text-center max-w-md w-full animate-bounce-in shadow-2xl">
+                <div className="mb-6">
+                  <PartyPopper className="w-16 h-16 text-accent mx-auto mb-4 animate-bounce" />
+                  <h2 className="text-3xl font-bold text-primary mb-2">{t.levelUp}</h2>
+                  <p className="text-lg text-muted-foreground mb-4">{t.congratulations}</p>
+                  <div className="bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg p-4 mb-6">
+                    <p className="text-xl font-bold text-primary">
+                      {t.newLevel} {t.levelNames[Math.min(newLevel - 1, t.levelNames.length - 1)]}
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleContinueTraining}
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-3"
+                >
+                  {t.continueTraining}
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Encouragement */}
           {attempts > 0 && !isSuccess && (
             <div className="mt-6 p-4 bg-blue-100 rounded-lg border-2 border-blue-300">
@@ -331,6 +434,23 @@ export default function ChildScreen({
           )}
         </Card>
       </div>
+      
+      <style jsx>{`
+        @keyframes confetti {
+          0% {
+            transform: translateY(-100vh) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+          }
+        }
+        
+        .animate-confetti {
+          animation: confetti linear infinite;
+        }
+      `}</style>
     </div>
   )
 }

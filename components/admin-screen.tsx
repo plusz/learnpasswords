@@ -264,7 +264,12 @@ export default function AdminScreen({
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(e) => onPasswordChange(e.target.value)}
+                    onChange={(e) => onPasswordChange(e.target.value.replace(/\s/g, ''))}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ') {
+                        e.preventDefault()
+                      }
+                    }}
                     placeholder={t.passwordPlaceholder}
                     className="pr-12 text-lg h-12"
                   />
