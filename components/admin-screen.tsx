@@ -15,6 +15,9 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
+  Info,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react"
 
 type Language = "en" | "pl"
@@ -27,6 +30,8 @@ interface AdminScreenProps {
   onSwitchToGuide: () => void
   password: string
   onPasswordChange: (password: string) => void
+  requireConfirmation: boolean
+  onRequireConfirmationChange: (require: boolean) => void
 }
 
 const translations = {
@@ -37,6 +42,7 @@ const translations = {
     passwordPlaceholder: "Enter a password...",
     strengthMeter: "Password Strength",
     switchToChild: "Switch to Child Mode",
+    instructions: "After entering your child's password, switch to Child Mode. The password is not saved and remains only in your browser until you close the tab.",
     education: {
       title: "Why Password Strength Matters",
       importance: "Strong passwords protect your child's accounts from hackers and keep personal information safe.",
@@ -46,6 +52,13 @@ const translations = {
       learnMore: "Learn more about password security",
       sourceCode: "Application source code",
       passwordGuide: "Guide: How to set a good password",
+    },
+    confirmation: {
+      title: "Mode Selection",
+      description: "Simple Mode: Password validation happens as the child types (easier learning). Real Mode: Password validation happens only after pressing Enter or clicking the Login button, similar to real applications.",
+      buttonText: "Login",
+      simpleMode: "Simple Mode",
+      realMode: "Real Mode",
     },
     strength: {
       weak: "Weak",
@@ -71,6 +84,7 @@ const translations = {
     passwordPlaceholder: "Wprowadź hasło...",
     strengthMeter: "Siła Hasła",
     switchToChild: "Przełącz na Tryb Dziecka",
+    instructions: "Po wpisaniu hasła dziecka, przełącz na Tryb Dziecka. Hasło nie jest zapisywane i jest jedynie w Twojej przeglądarce do czasu zamknięcia karty.",
     education: {
       title: "Dlaczego Siła Hasła Ma Znaczenie",
       importance:
@@ -81,6 +95,13 @@ const translations = {
       learnMore: "Dowiedz się więcej o bezpieczeństwie haseł",
       sourceCode: "Kod źródłowy aplikacji",
       passwordGuide: "Poradnik: Jak ustawić dobre hasło",
+    },
+    confirmation: {
+      title: "Wybór Trybu",
+      description: "Tryb Uproszczony: Walidacja hasła następuje podczas pisania (łatwiejsza nauka). Tryb Realny: Walidacja hasła następuje dopiero po naciśnięciu Enter lub kliknięciu przycisku Zaloguj, podobnie jak w prawdziwych aplikacjach.",
+      buttonText: "Zaloguj",
+      simpleMode: "Tryb Uproszczony",
+      realMode: "Tryb Realny",
     },
     strength: {
       weak: "Słabe",
@@ -143,8 +164,11 @@ export default function AdminScreen({
   onSwitchToGuide,
   password,
   onPasswordChange,
+  requireConfirmation,
+  onRequireConfirmationChange,
 }: AdminScreenProps) {
   const [showPassword, setShowPassword] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
   const t = translations[language]
   const strength = calculatePasswordStrength(password)
 
@@ -277,6 +301,52 @@ export default function AdminScreen({
 
                   <p className="text-sm text-muted-foreground">
                     {t.crackTime[strength.crackTime as keyof typeof t.crackTime]}
+                  </p>
+                </div>
+              )}
+
+              {/* Confirmation Toggle */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-medium">{t.confirmation.title}</span>
+                    <div 
+                      className="relative"
+                      onMouseEnter={() => setShowTooltip(true)}
+                      onMouseLeave={() => setShowTooltip(false)}
+                    >
+                      <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                      {showTooltip && (
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg z-10">
+                          <div className="text-center">{t.confirmation.description}</div>
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onRequireConfirmationChange(!requireConfirmation)}
+                    className="flex items-center gap-2 h-8"
+                  >
+                    {requireConfirmation ? (
+                      <ToggleRight className="w-6 h-6 text-primary" />
+                    ) : (
+                      <ToggleLeft className="w-6 h-6 text-muted-foreground" />
+                    )}
+                    <span className="text-sm">
+                      {requireConfirmation ? t.confirmation.realMode : t.confirmation.simpleMode}
+                    </span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Instructions */}
+              {password && (
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800 leading-relaxed">
+                    {t.instructions}
                   </p>
                 </div>
               )}

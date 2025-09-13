@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Eye, EyeOff, Languages, Star, Trophy, Sparkles } from "lucide-react"
+import { ArrowLeft, Eye, EyeOff, Languages, Star, Trophy, Sparkles, LogIn } from "lucide-react"
 
 type Language = "en" | "pl"
 
@@ -15,6 +15,7 @@ interface ChildScreenProps {
   password: string
   score: number
   onScoreChange: (score: number) => void
+  requireConfirmation: boolean
 }
 
 const translations = {
@@ -29,6 +30,7 @@ const translations = {
     success: "Amazing! You got it right! ⭐",
     score: "Stars earned",
     level: "Level",
+    loginButton: "Login",
     encouragement: [
       "You're doing great! 🌟",
       "Keep practicing! 💪",
@@ -50,6 +52,7 @@ const translations = {
     success: "Niesamowite! Udało ci się! ⭐",
     score: "Zdobyte gwiazdki",
     level: "Poziom",
+    loginButton: "Zaloguj",
     encouragement: [
       "Świetnie ci idzie! 🌟",
       "Ćwicz dalej! 💪",
@@ -69,6 +72,7 @@ export default function ChildScreen({
   password,
   score,
   onScoreChange,
+  requireConfirmation,
 }: ChildScreenProps) {
   const [inputPassword, setInputPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -95,8 +99,8 @@ export default function ChildScreen({
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    if (inputPassword && inputPassword === password) {
+  const handlePasswordCheck = () => {
+    if (inputPassword === password) {
       setIsSuccess(true)
       setFeedback(t.success)
       setShowCelebration(true)
@@ -114,7 +118,7 @@ export default function ChildScreen({
         setIsSuccess(false)
         setFeedback("")
       }, 3000)
-    } else if (inputPassword && inputPassword !== password && inputPassword.length >= password.length) {
+    } else {
       setIsSuccess(false)
       
       // If user typed more characters than password length, show special message
@@ -130,7 +134,38 @@ export default function ChildScreen({
         setFeedback("")
       }, 3000)
     }
-  }, [inputPassword, password, t.success, t.tryAgain, score, onScoreChange])
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && inputPassword) {
+      if (requireConfirmation) {
+        handlePasswordCheck()
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (!requireConfirmation) {
+      if (inputPassword && inputPassword === password) {
+        handlePasswordCheck()
+      } else if (inputPassword && inputPassword !== password && inputPassword.length >= password.length) {
+        setIsSuccess(false)
+        
+        // If user typed more characters than password length, show special message
+        if (inputPassword.length > password.length) {
+          setFeedback(t.tooLong)
+        } else {
+          setFeedback(t.tryAgain)
+        }
+        
+        setAttempts((prev) => prev + 1)
+
+        setTimeout(() => {
+          setFeedback("")
+        }, 3000)
+      }
+    }
+  }, [inputPassword, password, t.success, t.tryAgain, score, onScoreChange, requireConfirmation])
 
   if (!password) {
     return (
@@ -223,6 +258,7 @@ export default function ChildScreen({
                 type={showPassword ? "text" : "password"}
                 value={inputPassword}
                 onChange={(e) => setInputPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
                 placeholder={t.passwordPlaceholder}
                 className="text-2xl h-16 pr-16 text-center placeholder:text-gray-400 placeholder:font-light caret-primary"
                 autoFocus
@@ -243,6 +279,20 @@ export default function ChildScreen({
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </Button>
             </div>
+            
+            {/* Login Button - Outside the input field */}
+            {requireConfirmation && (
+              <div className="mt-4">
+                <Button
+                  onClick={handlePasswordCheck}
+                  disabled={!inputPassword}
+                  className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2 text-lg font-semibold"
+                >
+                  <LogIn className="w-5 h-5" />
+                  {t.loginButton}
+                </Button>
+              </div>
+            )}
             <button
               onClick={() => setShowPassword(!showPassword)}
               className="text-sm text-muted-foreground mt-2 hover:text-primary transition-colors cursor-pointer underline-offset-2 hover:underline"

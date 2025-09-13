@@ -59,6 +59,7 @@ export default function HomePage() {
   const [screen, setScreen] = useState<Screen>("home")
   const [password, setPassword] = useState("")
   const [childScore, setChildScore] = useState(0)
+  const [requireConfirmation, setRequireConfirmation] = useState(false)
 
   // Check URL parameters for language on component mount
   useEffect(() => {
@@ -111,6 +112,8 @@ export default function HomePage() {
         onSwitchToGuide={() => setScreen("guide")}
         password={password}
         onPasswordChange={setPassword}
+        requireConfirmation={requireConfirmation}
+        onRequireConfirmationChange={setRequireConfirmation}
       />
     )
   }
@@ -124,6 +127,7 @@ export default function HomePage() {
         password={password}
         score={childScore}
         onScoreChange={setChildScore}
+        requireConfirmation={requireConfirmation}
       />
     )
   }
