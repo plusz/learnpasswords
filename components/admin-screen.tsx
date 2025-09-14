@@ -206,21 +206,23 @@ export default function AdminScreen({
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-lime-50 p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
+        <div className="mb-8">
+          {/* Top row - Back button and title */}
+          <div className="flex items-center gap-4 mb-4">
             <Button variant="outline" onClick={onBack} className="flex items-center gap-2 bg-transparent">
               <ArrowLeft className="w-4 h-4" />
               Back
             </Button>
-            <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
-              <Shield className="w-8 h-8" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-2">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8" />
               {t.title}
             </h1>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Bottom row - Controls (responsive) */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 max-w-[390px] sm:max-w-none mx-auto sm:mx-0">
             {/* Language Selector */}
-            <div className="flex items-center gap-2 bg-white rounded-lg p-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white rounded-lg p-2 shadow-sm w-full sm:w-auto justify-center sm:justify-start">
               <Languages className="w-4 h-4 text-primary" />
               <Button
                 variant={language === "en" ? "default" : "outline"}
@@ -240,7 +242,10 @@ export default function AdminScreen({
               </Button>
             </div>
 
-            <Button onClick={onSwitchToChild} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button 
+              onClick={onSwitchToChild} 
+              className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto"
+            >
               {t.switchToChild}
             </Button>
           </div>
