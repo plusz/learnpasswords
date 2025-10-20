@@ -191,53 +191,61 @@ export default function HomePage() {
         </div>
 
         {/* Mode Selection */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <Card
-            className="p-8 hover:shadow-lg transition-all duration-300 cursor-pointer group border-2 hover:border-primary"
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div
+            className="relative p-8 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-primary/20 hover:border-primary/40 hover:scale-105"
             onClick={() => setScreen("admin")}
           >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                <Users className="w-8 h-8 text-primary" />
+            <div className="text-center relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg">
+                <Users className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-2">{t.adminButton}</h3>
-              <p className="text-muted-foreground">{language === "en" ? "Set passwords and monitor progress" : "Ustaw hasła i monitoruj postępy"}</p>
+              <h3 className="text-3xl font-bold mb-3 text-primary group-hover:text-primary/90 transition-colors">{t.adminButton}</h3>
+              <p className="text-muted-foreground text-lg font-medium">{language === "en" ? "Set passwords and monitor progress" : "Ustaw hasła i monitoruj postępy"}</p>
             </div>
-          </Card>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
 
-          <Card
-            className="p-8 hover:shadow-lg transition-all duration-300 cursor-pointer group border-2 hover:border-accent"
+          <div
+            className="relative p-8 bg-gradient-to-br from-accent/5 via-accent/10 to-accent/5 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-accent/20 hover:border-accent/40 hover:scale-105"
             onClick={() => setScreen("child")}
           >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors">
-                <Star className="w-8 h-8 text-accent" />
+            <div className="text-center relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-accent to-accent/80 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg animate-star-twinkle">
+                <Star className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-2">{t.childButton}</h3>
-              <p className="text-muted-foreground">{language === "en" ? "Practice passwords and earn stars!" : "Ćwicz hasła i zdobywaj gwiazdki!"}</p>
+              <h3 className="text-3xl font-bold mb-3 text-accent group-hover:text-accent/90 transition-colors">{t.childButton}</h3>
+              <p className="text-muted-foreground text-lg font-medium">{language === "en" ? "Practice passwords and earn stars!" : "Ćwicz hasła i zdobywaj gwiazdki!"}</p>
             </div>
-          </Card>
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
         </div>
 
         {/* Features */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="p-6 text-center">
-            <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h4 className="font-bold mb-2">{t.features.secure}</h4>
-            <p className="text-sm text-muted-foreground">{t.features.secureDesc}</p>
-          </Card>
+          <div className="p-6 text-center bg-white/50 rounded-lg border border-gray-200/50 hover:bg-white/70 transition-colors duration-200">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-primary/70" />
+            </div>
+            <h4 className="font-semibold mb-2 text-gray-700">{t.features.secure}</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">{t.features.secureDesc}</p>
+          </div>
 
-          <Card className="p-6 text-center">
-            <Star className="w-12 h-12 text-accent mx-auto mb-4" />
-            <h4 className="font-bold mb-2">{t.features.fun}</h4>
-            <p className="text-sm text-muted-foreground">{t.features.funDesc}</p>
-          </Card>
+          <div className="p-6 text-center bg-white/50 rounded-lg border border-gray-200/50 hover:bg-white/70 transition-colors duration-200">
+            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Star className="w-8 h-8 text-accent/70" />
+            </div>
+            <h4 className="font-semibold mb-2 text-gray-700">{t.features.fun}</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">{t.features.funDesc}</p>
+          </div>
 
-          <Card className="p-6 text-center">
-            <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h4 className="font-bold mb-2">{t.features.educational}</h4>
-            <p className="text-sm text-muted-foreground">{t.features.educationalDesc}</p>
-          </Card>
+          <div className="p-6 text-center bg-white/50 rounded-lg border border-gray-200/50 hover:bg-white/70 transition-colors duration-200">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-primary/70" />
+            </div>
+            <h4 className="font-semibold mb-2 text-gray-700">{t.features.educational}</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">{t.features.educationalDesc}</p>
+          </div>
         </div>
 
         {/* Footer */}
